@@ -8,8 +8,7 @@
 </template>
 
 <script lang='ts' setup>
-import {defineProps, defineEmits, ref, Ref} from 'vue'
-import IPatient from '@/Interface/IPatient'
+import {defineProps, defineEmits, ref} from 'vue'
     const props = defineProps({
         name : String,
         email: String,
