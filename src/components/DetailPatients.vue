@@ -1,5 +1,5 @@
 <template>
-<tr class="cursor-pointer">
+<tr class="cursor-pointer " @click="handleClick">
     <td class="px-6 py-4 whitespace-nowrap">{{ props.name}}</td>
     <td class="px-6 py-4 whitespace-nowrap">{{ props.email}}</td>
     <td class="px-6 py-4 whitespace-nowrap">{{ props.age}}</td>
@@ -8,13 +8,24 @@
 </template>
 
 <script lang='ts' setup>
-import {defineProps, ref, Ref} from 'vue'
+import {defineProps, defineEmits, ref, Ref} from 'vue'
+import IPatient from '@/Interface/IPatient'
     const props = defineProps({
         name : String,
         email: String,
         age: Number,
         gender: String,
     })
+    const emit = defineEmits(['sendData'])
+    let msg = ref({
+        name: props.name,
+        email: props.email,
+        age: props.age,
+        gender: props.gender,
+    })
+    const handleClick = () => {
+        emit('sendData',msg.value)
+    }
 </script>
 
 <style scope>

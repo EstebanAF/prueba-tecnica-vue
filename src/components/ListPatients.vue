@@ -1,21 +1,32 @@
 <template>
 <div >
-    <div class="flex flex-row justify-center m-5">
-        <h1 class="text-3xl">Patients</h1> 
-        <span class="bg-blue-200 text-blue-800 font-semibold py-1 px-3 text-lg
-         rounded mx-3">{{ count_patients }}</span>
-        <button class="text-lg bg-blue-500 py-1 px-3 rounded-lg text-white "
-        @click="openModal()">
+    <div class="flex flex-col justify-center">
+        <div class="flex flex-row justify-center mx-auto">
+            <input type="search" name="search" id="search" class=" bg-gray-100 max-w-sm rounded px-5 py-1 border-2"
+            v-model="search">
+            <button class="ml-2 px-2 py-1 rounded bg-blue-500 text-white">Search</button>
+        </div>
+        <div class="flex flex-row justify-center m-5">
+            <h1 class="text-3xl">Patients</h1> 
+            <span class="bg-blue-200 text-blue-800 font-semibold py-1 px-3 text-lg
+            rounded mx-3">{{ count_patients }}</span>
+            <button class="text-lg bg-blue-500 py-1 px-3 rounded-lg text-white "
+            @click="openModalAdd()">
             Add Patient
-        </button>
+            </button>
+        </div>
     </div>
     <hr>
 
     <ModalPatient
         v-if="isModalOpen"
         :closeModal="closeModal"
+        :patient="PatientModal"
     />
-
+    <ModalPatientAdd
+        v-if="isModalOpenAdd"
+        :closeModal="closeModalAdd"
+    />
 
 
     <div class="max-w-3xl mx-auto  m-2" >
@@ -37,6 +48,7 @@
                         :age="patient.age"
                         :gender="patient.gender"
                         @click="openModal"
+                        @sendData="modalUpOrDel"
                     />
                     <!-- Agrega más filas según sea necesario -->
                 </tbody>
@@ -52,6 +64,9 @@ import {ref,Ref} from 'vue'
 import DetailPatient from './DetailPatients.vue'
 import IPatient from '@/Interface/IPatient'
 import ModalPatient from './ModalPatient.vue'
+import ModalPatientAdd from './ModalPatientAdd.vue'
+
+
 const patients:Ref<Array<IPatient>> = ref([
     {
     name : "John Doe",
@@ -66,15 +81,15 @@ const patients:Ref<Array<IPatient>> = ref([
     gender: "Female",
     },
     {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
+    name : "user 3",
+    email: "user3@example.com",
+    age: 22,
     gender: "Female",
     },
     {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
+    name : "user 4",
+    email: "user4@example.com",
+    age: 35,
     gender: "Female",
     },
     {
@@ -141,15 +156,40 @@ const patients:Ref<Array<IPatient>> = ref([
 ])
 let count_patients:Ref<number> = ref(235)
 
+//this is for searech bar
+let search = ref('hola')
+
+// this is for modal information
+let PatientModal = {
+    name : "",
+    email: "",
+    age: 1,
+    gender: "",
+}
+const modalUpOrDel = (msg:IPatient) => {
+    PatientModal = {
+        name :msg.name,
+        email:msg.email,
+        age: msg.age,
+        gender:msg.gender
+    }
+
+}
 
 let isModalOpen = ref(false);
+let isModalOpenAdd = ref(false);
 const openModal = function() {
     isModalOpen.value = true;
-    console.log(isModalOpen.value)
+}
+const openModalAdd = function() {
+    isModalOpenAdd.value = true;
+
 }
 const closeModal = function() {
-    isModalOpen.value = false;
-    console.log(isModalOpen.value)
+    isModalOpen.value = false;  
+}
+const closeModalAdd = function() {
+    isModalOpenAdd.value = false
 }
 
 </script>
