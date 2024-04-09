@@ -75,10 +75,11 @@ const patientsAdd = async () => {
     console.log(data)
     patients.value = data
 }
+patientsAdd()
 let count_patients:Ref<number> = ref(235)
 
 //this is for searech bar
-let search = ref('hola')
+let search = ref('')
 
 // this is for modal information
 let PatientModal = {

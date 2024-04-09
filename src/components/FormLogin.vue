@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div v-if="!user">
+    <div v-if="user=undefined">
       <div class="max-w-md w-full bg-white p-8 shadow-md">
         <h2 class="text-2xl font-bold mb-4">Inicio de Sesión</h2>
         <form @submit.prevent="submitForm">
@@ -28,7 +28,7 @@
 import {ref,Ref} from 'vue'
 import {login,logout,getCurrentUser} from "@/supabase/Crud"
 
-let user:Ref = ref()
+let user:Ref = ref(getCurrentUser())
 let email:Ref =  ref('')
 let password:Ref = ref('')
 
@@ -44,7 +44,7 @@ const logoutApp = async ()=> {
   console.log('Cerrando sesión...');
   let error  = await logout()
   user.value = await getCurrentUser()
-  
+  console.log(user.value)
 }
 </script>
 
