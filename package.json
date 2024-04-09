@@ -11,6 +11,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "core-js": "^3.8.3",
+    "lucide-react": "^0.366.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "vue": "^3.2.13",
