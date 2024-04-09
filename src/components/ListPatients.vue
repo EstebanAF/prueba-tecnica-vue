@@ -65,95 +65,16 @@ import DetailPatient from './DetailPatients.vue'
 import IPatient from '@/Interface/IPatient'
 import ModalPatient from './ModalPatient.vue'
 import ModalPatientAdd from './ModalPatientAdd.vue'
+//import { Supabase } from '@supabase/supabase-js';
+import { getPatients, getCurrentUser, getPatientById, createPatient, updatePatient, deletePatient} from "@/supabase/Crud"
 
 
-const patients:Ref<Array<IPatient>> = ref([
-    {
-    name : "John Doe",
-    email: "john@example.com",
-    age: 30,
-    gender: "Male",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 3",
-    email: "user3@example.com",
-    age: 22,
-    gender: "Female",
-    },
-    {
-    name : "user 4",
-    email: "user4@example.com",
-    age: 35,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-    {
-    name : "user 2",
-    email: "user2@example.com",
-    age: 54,
-    gender: "Female",
-    },
-
-])
+const patients:Ref<Array<IPatient>> = ref([])
+const patientsAdd = async () => {
+    let data = await getPatients()
+    console.log(data)
+    patients.value = data
+}
 let count_patients:Ref<number> = ref(235)
 
 //this is for searech bar
