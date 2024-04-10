@@ -21,5 +21,10 @@
     pass: admin123
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Architecture
+#### This app is based on a layered architecture since it's simple code. So, three layers were defined:
+
+#### 1. Application layer (which includes all view components like views and components).
+#### 2.Supabase folder, which is the library enabling communication between the application layer (layer 1) and the backend, which constitutes the third layer, with Supabase service.
+#### 3. Backend Supabase 
+![alt text](image.png)
