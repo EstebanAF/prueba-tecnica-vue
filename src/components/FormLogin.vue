@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div v-if="user=undefined">
+    <div v-if="!user">
+      
       <div class="max-w-md w-full bg-white p-8 shadow-md">
         <h2 class="text-2xl font-bold mb-4">Inicio de Sesión</h2>
         <form @submit.prevent="submitForm">
@@ -25,26 +26,33 @@
 </template>
 
 <script lang="ts" setup>
-import {ref,Ref} from 'vue'
-import {login,logout,getCurrentUser} from "@/supabase/Crud"
+import { ref, Ref, watch } from 'vue'
+import { login, logout, getCurrentUser } from "@/supabase/Crud"
 
-let user:Ref = ref(getCurrentUser())
-let email:Ref =  ref('')
-let password:Ref = ref('')
+let user: Ref = ref('')
+let email: Ref = ref('')
+let password: Ref = ref('')
 
-const submitForm = async ()=> {
-  // Aquí puedes agregar la lógica para enviar el formulario
-  let data = await login(email.value,password.value)
+
+// Función para actualizar el usuario
+const updateUser = async () => {
   user.value = await getCurrentUser()
-  
+}
+updateUser()
+// Watcher para monitorear cambios en el usuario
+watch(user, () => {
+  console.log('Usuario actualizado:', user.value )
+})
+
+const submitForm = async () => {
+  let data = await login(email.value, password.value)
+  await updateUser()
 }
 
-const logoutApp = async ()=> {
-  // Aquí agregarías la lógica para cerrar sesión
+const logoutApp = async () => {
   console.log('Cerrando sesión...');
-  let error  = await logout()
-  user.value = await getCurrentUser()
-  console.log(user.value)
+  let error = await logout()
+  await updateUser()
 }
 </script>
 

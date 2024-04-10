@@ -20,28 +20,28 @@
               <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                 Name
               </label>
-              <input v-model="User.name" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter name">
+              <input v-model="User.name" required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter name">
             </div>
             <!-- Campo Email -->
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                 Email
               </label>
-              <input v-model="User.email" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter email">
+              <input v-model="User.email" required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter email">
             </div>
             <!-- Campo Age -->
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="age">
                 Age
               </label>
-              <input v-model="User.age" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="age" type="number" placeholder="Enter age">
+              <input v-model="User.age" required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="age" type="number" placeholder="Enter age">
             </div>
             <!-- Campo Gender -->
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">
                 Gender
               </label>
-              <select v-model="User.gender" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gender">
+              <select v-model="User.gender" required class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gender">
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
@@ -63,20 +63,27 @@
 <script lang='ts' setup>
 import {defineProps, ref, Ref} from 'vue'
 import IPatient from '@/Interface/IPatient'
+import {getCurrentUser, getPatientById, createPatient, updatePatient, deletePatient} from "@/supabase/Crud"
 const props = defineProps({
     isModalOpen: Boolean,
     closeModal: Function,
 })
 
-const User:IPatient =  {
+let User:Ref<IPatient> =  ref({
     name: '',
     email:'',
     age: 1,
     gender: '' // Valor predeterminado
-}
+})
 
-const deleteUser = () => {
-    console.log("deleting")
+const addUser = async () => {
+  await createPatient(User.value)
+  User.value =  {
+    name: '',
+    email:'',
+    age: 1,
+    gender: '' // Valor predeterminado
+  }
 }
 </script>
 

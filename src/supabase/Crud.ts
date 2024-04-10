@@ -3,6 +3,7 @@ import supabase from './client'
 // get the UUID 
 async function getCurrentUser() {
     const { data: { user } } = await supabase.auth.getUser()
+    
     return user?.id
   }
   
@@ -67,12 +68,18 @@ async function getCurrentUser() {
   // Función para crear un nuevo paciente asociado a un usuario específico
   async function createPatient(patientData:IPatient) {
     try {
-      const userId = getCurrentUser(); // Obtén el UUID del usuario actual
+      const userId = await getCurrentUser(); // Obtén el UUID del usuario actual
       if (!userId) throw new Error('No hay usuario autenticado.');
-  
+        console.log(userId)
       const { data, error } = await supabase
         .from('patients')
-        .insert({ ...patientData, user_id: userId }); // Asocia el paciente al UUID del usuario
+        .insert({ 
+            name: patientData.name,
+            email: patientData.email,
+            age: patientData.age,
+            gender: patientData.gender,
+            user_id: userId })
+        .select(); // Asocia el paciente al UUID del usuario
   
       if (error) {
         throw error;

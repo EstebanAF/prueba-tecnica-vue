@@ -42,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <DetailPatient v-for="(patient,index) in patients" :key="index"
+                    <DetailPatient v-for="patient in patients" :key="patient?.id"
                         :name="patient.name" 
                         :email="patient.email"
                         :age="patient.age"
@@ -68,15 +68,16 @@ import ModalPatientAdd from './ModalPatientAdd.vue'
 //import { Supabase } from '@supabase/supabase-js';
 import { getPatients, getCurrentUser, getPatientById, createPatient, updatePatient, deletePatient} from "@/supabase/Crud"
 
+let count_patients:Ref<number> = ref(0)
 
 const patients:Ref<Array<IPatient>> = ref([])
 const patientsAdd = async () => {
     let data = await getPatients()
     console.log(data)
     patients.value = data
+    count_patients.value = patients.value.length
 }
 patientsAdd()
-let count_patients:Ref<number> = ref(235)
 
 //this is for searech bar
 let search = ref('')
