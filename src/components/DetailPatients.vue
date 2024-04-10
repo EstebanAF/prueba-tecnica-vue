@@ -14,6 +14,7 @@ import {defineProps, defineEmits, ref} from 'vue'
         email: String,
         age: Number,
         gender: String,
+        id:Number
     })
     const emit = defineEmits(['sendData'])
     let msg = ref({
@@ -21,6 +22,7 @@ import {defineProps, defineEmits, ref} from 'vue'
         email: props.email,
         age: props.age,
         gender: props.gender,
+        id: props.id
     })
     const handleClick = () => {
         emit('sendData',msg.value)

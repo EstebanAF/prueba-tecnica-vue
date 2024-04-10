@@ -4,7 +4,7 @@
         <div class="flex flex-row justify-center mx-auto">
             <input type="search" name="search" id="search" class=" bg-gray-100 max-w-sm rounded px-5 py-1 border-2"
             v-model="search">
-            <button class="ml-2 px-2 py-1 rounded bg-blue-500 text-white">Search</button>
+            <button class="ml-2 px-2 py-1 rounded bg-blue-500 text-white " @click="getSearch()">Search</button>
         </div>
         <div class="flex flex-row justify-center m-5">
             <h1 class="text-3xl">Patients</h1> 
@@ -42,13 +42,14 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <DetailPatient v-for="patient in patients" :key="patient?.id"
-                        :name="patient.name" 
-                        :email="patient.email"
-                        :age="patient.age"
-                        :gender="patient.gender"
-                        @click="openModal"
-                        @sendData="modalUpOrDel"
+                    <DetailPatient v-for="(patient,index) in patients" :key="index"
+                    :name="patient.name" 
+                    :email="patient.email"
+                    :age="patient.age"
+                    :gender="patient.gender"
+                    :id="patient.id"
+                    @click="openModal"
+                    @sendData="modalUpOrDel"
                     />
                     <!-- Agrega más filas según sea necesario -->
                 </tbody>
@@ -62,18 +63,18 @@
 <script lang='ts' setup>
 import {ref,Ref} from 'vue'
 import DetailPatient from './DetailPatients.vue'
+import IPatientUpdate from '@/Interface/IPatientUpdate'
 import IPatient from '@/Interface/IPatient'
 import ModalPatient from './ModalPatient.vue'
 import ModalPatientAdd from './ModalPatientAdd.vue'
 //import { Supabase } from '@supabase/supabase-js';
-import { getPatients, getCurrentUser, getPatientById, createPatient, updatePatient, deletePatient} from "@/supabase/Crud"
+import { getPatients, getBySearch,} from "@/supabase/Crud"
 
 let count_patients:Ref<number> = ref(0)
 
-const patients:Ref<Array<IPatient>> = ref([])
+const patients:Ref<Array<IPatientUpdate>> = ref([])
 const patientsAdd = async () => {
     let data = await getPatients()
-    console.log(data)
     patients.value = data
     count_patients.value = patients.value.length
 }
@@ -82,19 +83,38 @@ patientsAdd()
 //this is for searech bar
 let search = ref('')
 
+const getSearch = async () => {
+    console.log(search.value)
+    if (search.value !== '') {
+        let data = await getBySearch(search.value)
+        patients.value = await data
+        try {
+            count_patients.value = patients.value.length
+            
+        }
+        catch(error){
+            count_patients.value = 0
+        }
+    }
+    else{
+        patientsAdd()
+    }
+} 
 // this is for modal information
 let PatientModal = {
     name : "",
     email: "",
     age: 1,
     gender: "",
+    id: 0
 }
-const modalUpOrDel = (msg:IPatient) => {
+const modalUpOrDel = (msg:IPatientUpdate) => {
     PatientModal = {
         name :msg.name,
         email:msg.email,
         age: msg.age,
-        gender:msg.gender
+        gender:msg.gender,
+        id: msg.id,
     }
 
 }
@@ -106,7 +126,6 @@ const openModal = function() {
 }
 const openModalAdd = function() {
     isModalOpenAdd.value = true;
-
 }
 const closeModal = function() {
     isModalOpen.value = false;  

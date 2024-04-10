@@ -70,7 +70,7 @@ async function getCurrentUser() {
     try {
       const userId = await getCurrentUser(); // Obtén el UUID del usuario actual
       if (!userId) throw new Error('No hay usuario autenticado.');
-        console.log(userId)
+       
       const { data, error } = await supabase
         .from('patients')
         .insert({ 
@@ -110,10 +110,41 @@ async function getCurrentUser() {
       throw error;
     }
   }
+
+  async function getBySearch(param:string){
+    try{
+        const searchTerms = param + '%';
+        const userId = await getCurrentUser(); // Obtén el UUID del usuario actual
+      if (!userId) throw new Error('No hay usuario autenticado.');
+       
+    
+         const query = supabase
+        .from('patients')
+        .select("*")
+        .eq('user_id', userId)
+        .filter('email','like', searchTerms)
+    
+
+    // Ejecutar la consulta
+    const { data , error } = await query;
+
+    // Manejar el resultado
+    if (error) {
+        console.error("Error al buscar pacientes:", error.message);
+        return null; // Otra forma de manejar el error
+    } else {
+        console.log("Pacientes encontrados:", data);
+        return data; // Devolver los datos encontrados
+    }
+    }catch(error){
+        console.error('Error al actualizar paciente:');
+         throw error;
+    }
+    }
   
-  
-  async function deletePatient(patientId:number) {
+  async function deletePatient(patientId:string) {
     try {
+        console.log(patientId)
       const { data, error } = await supabase
         .from('patients')
         .delete()
@@ -130,5 +161,5 @@ async function getCurrentUser() {
     }
   }
   
-  export { login, logout, getCurrentUser,getPatients, getPatientById, createPatient, updatePatient, deletePatient };
+  export { login, logout, getBySearch,getCurrentUser,getPatients, getPatientById, createPatient, updatePatient, deletePatient };
   

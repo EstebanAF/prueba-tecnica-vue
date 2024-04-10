@@ -49,8 +49,9 @@
             </div>
             <!-- Botones -->
             <div class="flex justify-end">
-              <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Update</button>
+              <button @click="UpdateUser" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Update</button>
               <button @click="deleteUser" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+              {{ props.uniq }}
             </div>
           </form>
         </div>
@@ -64,21 +65,41 @@
 <script lang='ts' setup>
 import {defineProps, ref, Ref} from 'vue'
 import IPatient from '@/Interface/IPatient'
+import IPatientUpdate from '@/Interface/IPatientUpdate'
+import {getCurrentUser, getPatientById, createPatient, updatePatient, deletePatient} from "@/supabase/Crud"
+
 const props = defineProps({
     isModalOpen: Boolean,
     closeModal: Function,
-    patient: IPatient,
+    patient: IPatientUpdate,
 })
 
-const User:IPatient =  {
+const User:Ref<IPatientUpdate> =  ref({
     name: props.patient.name,
     email: props.patient.email,
     age: props.patient.age,
-    gender: props.patient.gender // Valor predeterminado
+    gender: props.patient.gender, 
+    id: props.patient.id
+})
+
+const deleteUser = async () => {
+  console.log(props)
+  await deletePatient(props.patient.id)
+  User.value = {name: '',
+    email:'',
+    age: 1,
+    gender: ''}
+  props.closeModal()
 }
 
-const deleteUser = () => {
-    console.log("deleting")
+const UpdateUser = async () => {
+  console.log("updating")
+  await updatePatient(props.patient.id,User.value)
+  User.value = {name: '',
+    email:'',
+    age: 1,
+    gender: ''}
+  props.closeModal()
 }
 </script>
 
