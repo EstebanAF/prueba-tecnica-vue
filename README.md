@@ -1,23 +1,24 @@
 # prueba-tecnica
 
-## Project setup
-```
-npm install
-```
+## To test the code:
 
-### Compiles and hot-reloads for development
 ```
-npm run serve
+ https://github.com/EstebanAF/prueba-tecnica-vue.git
+ cd prueba-tecnica-vue
+ npm install
+ npm run serve
 ```
+## So now in http://localhost:8081/ u can find the web
 
-### Compiles and minifies for production
+### user1
 ```
-npm run build
+    User: admin@admin.com
+    pass: admin123
 ```
-
-### Lints and fixes files
+### user2
 ```
-npm run lint
+    User: admin2@admin.com
+    pass: admin123
 ```
 
 ### Customize configuration
